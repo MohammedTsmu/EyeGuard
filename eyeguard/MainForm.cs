@@ -25,6 +25,9 @@ namespace eyeguard
         private PictureBox pinPictureBox;
         private Image pinImage;
         private Image unpinImage;
+        private NotifyIcon notifyIcon;
+        private ContextMenuStrip trayMenu;
+
 
         public MainForm()
         {
@@ -75,6 +78,26 @@ namespace eyeguard
             this.BackColor = Color.Magenta; // تعيين لون الخلفية ليكون شفافاً
             this.TransparencyKey = Color.Magenta; // تعيين لون الشفافية ليكون نفس لون الخلفية
 
+            // إعداد NotifyIcon
+            notifyIcon = new NotifyIcon();
+            notifyIcon.Icon= Properties.Resources.hideico; // تأكد من إضافة أيقونة التطبيق إلى الموارد
+            notifyIcon.Visible = true;
+            notifyIcon.Text = "EyeGuard";
+
+            // إعداد قائمة سياق النظام
+            trayMenu = new ContextMenuStrip();
+            trayMenu.Items.Add("Settings", null, SettingsItem_Click);
+            trayMenu.Items.Add("Start with Windows", null, (s, e) => SetStartup(true));
+            trayMenu.Items.Add("Exit", null, ExitItem_Click);
+
+            notifyIcon.ContextMenuStrip = trayMenu;
+
+            // إخفاء النموذج الرئيسي عند التشغيل
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = false;
+            notifyIcon.DoubleClick += (s, e) => this.Show();
+
+
             progressBar = new MaterialProgressBar();
             progressBar.Maximum = workDuration;
             progressBar.Value = workDuration;
@@ -117,6 +140,26 @@ namespace eyeguard
             this.ContextMenuStrip.Items.Add(startupItem);
         }
 
+        private void ShowMainForm()
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+        }
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            this.ShowInTaskbar = false;
+        }
+
+        private void ExitItem_Click(object sender, EventArgs e)
+        {
+            notifyIcon.Visible = false;
+            Application.Exit();
+        }
+
+
         private void PinPictureBox_Click(object sender, EventArgs e)
         {
             this.TopMost = !this.TopMost;
@@ -142,6 +185,23 @@ namespace eyeguard
             }
         }
 
+        /*private void WorkTimer_Tick(object sender, EventArgs e)
+        {
+            workTimeLeft--;
+            if (workTimeLeft >= 0)
+            {
+                progressBar.Value = workTimeLeft;
+                countdownLabel.Text = TimeSpan.FromSeconds(workTimeLeft).ToString(@"mm\:ss");
+            }
+
+            if (workTimeLeft <= 0)
+            {
+                workTimer.Stop();
+                ShowBreakScreen();
+                breakTimer.Start();
+            }
+        }*/
+
         private void WorkTimer_Tick(object sender, EventArgs e)
         {
             workTimeLeft--;
@@ -149,6 +209,13 @@ namespace eyeguard
             {
                 progressBar.Value = workTimeLeft;
                 countdownLabel.Text = TimeSpan.FromSeconds(workTimeLeft).ToString(@"mm\:ss");
+
+                // تشغيل صوت التنبيه قبل 10 ثوانٍ من بدء فترة الراحة
+                if (workTimeLeft == 10)
+                {
+                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(Properties.Resources.mixkit_alert_bells_echo_765);
+                    player.Play();
+                }
             }
 
             if (workTimeLeft <= 0)
@@ -168,6 +235,13 @@ namespace eyeguard
                 breakProgressBar.Value = breakTimeLeft;
             }
 
+
+            // تشغيل صوت التنبيه قبل 3 ثوانٍ من بدء فترة العمل
+            if (breakTimeLeft == 3)
+            {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(Properties.Resources.mixkit_electric_charge_hum_3201);
+                player.Play();
+            }
             if (breakTimeLeft <= 0)
             {
                 breakTimer.Stop();
