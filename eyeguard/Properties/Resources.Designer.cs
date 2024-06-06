@@ -61,46 +61,6 @@ namespace eyeguard.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon eye_scannerico {
-            get {
-                object obj = ResourceManager.GetObject("eye_scannerico", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap eye_scannerpng {
-            get {
-                object obj = ResourceManager.GetObject("eye_scannerpng", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon hideico {
-            get {
-                object obj = ResourceManager.GetObject("hideico", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap hidepng {
-            get {
-                object obj = ResourceManager.GetObject("hidepng", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream mixkit_alert_bells_echo_765 {
@@ -135,6 +95,16 @@ namespace eyeguard.Properties {
             get {
                 object obj = ResourceManager.GetObject("unpin", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon vision {
+            get {
+                object obj = ResourceManager.GetObject("vision", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

@@ -47,6 +47,8 @@ namespace eyeguard
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Height = 30;
+            this.Width = 120;
             // يمكنك إضافة أي كود ترغب في تنفيذه عند تحميل النموذج هنا
         }
 
@@ -69,18 +71,19 @@ namespace eyeguard
         {
             this.Text = "EyeGuard";
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(0, 0);
-            this.Width = 300;
-            this.Height = 50; // زيادة ارتفاع النافذة لتناسب شريط التقدم الأكبر
+            this.Location = new Point(50, 20);
+            this.Width = 100;
+            this.Height = 0; // زيادة ارتفاع النافذة لتناسب شريط التقدم الأكبر
             this.FormBorderStyle = FormBorderStyle.None; // إزالة شريط العنوان
             this.ControlBox = false; // إزالة أزرار التحكم (التصغير، التكبير، الإغلاق)
             this.TopMost = true; // جعل النافذة تظهر دائمًا فوق النوافذ الأخرى
-            this.BackColor = Color.Magenta; // تعيين لون الخلفية ليكون شفافاً
-            this.TransparencyKey = Color.Magenta; // تعيين لون الشفافية ليكون نفس لون الخلفية
+            this.BackColor = Color.Orange; // تعيين لون الخلفية ليكون شفافاً
+            this.Sizable = false;
+
 
             // إعداد NotifyIcon
             notifyIcon = new NotifyIcon();
-            notifyIcon.Icon= Properties.Resources.hideico; // تأكد من إضافة أيقونة التطبيق إلى الموارد
+            notifyIcon.Icon= Properties.Resources.vision; // تأكد من إضافة أيقونة التطبيق إلى الموارد
             notifyIcon.Visible = true;
             notifyIcon.Text = "EyeGuard";
 
@@ -101,13 +104,12 @@ namespace eyeguard
             progressBar = new MaterialProgressBar();
             progressBar.Maximum = workDuration;
             progressBar.Value = workDuration;
-            progressBar.Height = 30; // زيادة ارتفاع شريط التقدم
-            progressBar.Width = this.Width - 60; // ضبط العرض ليكون مناسباً ويترك مساحة لأيقونة الدبوس
-            progressBar.Location = new Point(0, 15);
+            progressBar.Width = 100;
+            progressBar.Location = new Point(0, 25);
 
             countdownLabel = new Label();
             countdownLabel.TextAlign = ContentAlignment.MiddleCenter;
-            countdownLabel.Font = new Font("Arial", 12, FontStyle.Bold);
+            countdownLabel.Font = new Font("Arial", 10, FontStyle.Bold);
             countdownLabel.ForeColor = Color.White; // تعيين لون النص ليكون أبيض
             countdownLabel.BackColor = Color.Transparent;
             countdownLabel.Text = TimeSpan.FromSeconds(workTimeLeft).ToString(@"mm\:ss");
@@ -120,8 +122,8 @@ namespace eyeguard
             pinPictureBox.Image = unpinImage;
             pinPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
             pinPictureBox.Width = 20; // ضبط عرض الأيقونة
-            pinPictureBox.Height = 20; // ضبط ارتفاع الأيقونة
-            pinPictureBox.Location = new Point(this.Width - 20, 15); // ضبط موقع أيقونة الدبوس
+            pinPictureBox.Height = 30; // ضبط ارتفاع الأيقونة
+            pinPictureBox.Location = new Point(100, 0);
             pinPictureBox.Click += PinPictureBox_Click;
 
             // إضافة العناصر مباشرة إلى النموذج
@@ -185,22 +187,7 @@ namespace eyeguard
             }
         }
 
-        /*private void WorkTimer_Tick(object sender, EventArgs e)
-        {
-            workTimeLeft--;
-            if (workTimeLeft >= 0)
-            {
-                progressBar.Value = workTimeLeft;
-                countdownLabel.Text = TimeSpan.FromSeconds(workTimeLeft).ToString(@"mm\:ss");
-            }
-
-            if (workTimeLeft <= 0)
-            {
-                workTimer.Stop();
-                ShowBreakScreen();
-                breakTimer.Start();
-            }
-        }*/
+        
 
         private void WorkTimer_Tick(object sender, EventArgs e)
         {
@@ -306,15 +293,7 @@ namespace eyeguard
             }
         }
 
-        /*private void SaveSettings()
-        {
-            using (var writer = new StreamWriter("settings.txt"))
-            {
-                writer.WriteLine(workDuration);
-                writer.WriteLine(breakDuration);
-                writer.WriteLine(enableStartup);
-            }
-        }*/
+        
         private void SaveSettings()
         {
             string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "settings.txt");
@@ -326,30 +305,7 @@ namespace eyeguard
             }
         }
 
-        /*private void LoadSettings()
-        {
-            if (File.Exists("settings.txt"))
-            {
-                using (var reader = new StreamReader("settings.txt"))
-                {
-                    if (int.TryParse(reader.ReadLine(), out int savedWorkDuration))
-                    {
-                        workDuration = savedWorkDuration;
-                    }
-
-                    if (int.TryParse(reader.ReadLine(), out int savedBreakDuration))
-                    {
-                        breakDuration = savedBreakDuration;
-                    }
-
-                    if (bool.TryParse(reader.ReadLine(), out bool savedEnableStartup))
-                    {
-                        enableStartup = savedEnableStartup;
-                        SetStartup(enableStartup);
-                    }
-                }
-            }
-        }*/
+        
         private void LoadSettings()
         {
             string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "settings.txt");
